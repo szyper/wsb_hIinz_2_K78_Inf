@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="f54a2358-756d-42b0-8393-2fa127a999d8" name="php_server" url="http://localhost/git\wsb\wsb_hIinz_2_K78_Inf">
+        <fileTransfer accessType="LOCAL" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>
