@@ -17,5 +17,8 @@ git config --global user.email "email@gmail.com"
 git config --global user.name "name"
 
 git commit
-git push origin main
+
+git add *
+git commit -m "php"
+git push origin main / git push
 
