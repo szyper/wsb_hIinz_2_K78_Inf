@@ -10,6 +10,15 @@
 </head>
 <body>
 <h4>Użytkownicy</h4>
+<?php
+  if (isset($_GET["deleteUser"])){
+    if ($_GET["deleteUser"] == 0){
+      echo "<h4>Nie udało się usunąć użytkownika!</h4>";
+    }else{
+	    echo "<h4>Udało się usunąć użytkownika o id = $_GET[deleteUser]</h4>";
+    }
+  }
+?>
 <table>
   <tr>
     <th>Imię</th>
@@ -23,8 +32,12 @@
 	require_once "../scripts/connect.php";
 $sql = "SELECT u.id userId, u.firstName, u.lastName, u.birthday, c.city, s.state, co.country FROM `users` u JOIN `cities` c ON `u`.`city_id`=`c`.`id` JOIN `states` s ON `c`.`state_id`=`s`.`id` JOIN `countries` co ON `s`.`country_id`=`co`.`id`;";
   $result = $conn->query($sql);
-  while($user = $result->fetch_assoc()){
-    echo <<< TABLEUSERS
+//  echo $result->num_rows;
+if ($result->num_rows == 0){
+  echo "<tr><td colspan='6'>Brak rekordów do wyświetlenia</td></tr>";
+}else{
+	while($user = $result->fetch_assoc()){
+		echo <<< TABLEUSERS
       <tr>
         <td>$user[firstName]</td>
         <td>$user[lastName]</td>
@@ -34,12 +47,37 @@ $sql = "SELECT u.id userId, u.firstName, u.lastName, u.birthday, c.city, s.state
         <td>$user[country]</td>
         <td><a href="../scripts/delete_user.php?userDeleteId=$user[userId]">Usuń</a></td>
       </tr>
-      
 TABLEUSERS;
+	}
+}
+
+  echo "</table><hr>";
+  if (isset($_GET["addUserForm"])){
+    echo <<< ADDUSERFORM
+      <h4>Dodawanie użytkownika</h4>
+      <form method="post" action="../scripts/add_user.php">
+        <input type="text" name="firstName" placeholder="Podaj imię"><br><br>
+        <input type="text" name="lastName" placeholder="Podaj nazwisko"><br><br>
+        <input type="date" name="birthday">Data urodzenia<br><br>
+        <select name="city_id">
+ADDUSERFORM;
+        $sql = "SELECT * FROM `cities`;";
+        $result = $conn->query($sql);
+        while($city = $result->fetch_assoc()){
+          echo "<option value=\"$city[id]\">$city[city]</option>";
+        }
+	  echo <<< ADDUSERFORM
+        </select><br><br>
+        <input type="submit" value="Dodaj użytkownika">
+      </form>
+ADDUSERFORM;
+
+  }else{
+    echo '<a href="./3_db_table_delete.php?addUserForm=1">Dodaj użytkownika</a>';
   }
-  echo "</table>";
   $conn->close();
 ?>
+
 
 </body>
 </html>
