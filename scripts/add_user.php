@@ -21,6 +21,6 @@ if ($conn->affected_rows == 1){
 	$_SESSION['error'] = "Błędnie dodano rekord";
 }
 
-header("location: ../3_db/3_db_table_delete.php");
+header("location: ../3_db/4_db_table_delete_add_update.php");
 
 //dokończyć sesję
