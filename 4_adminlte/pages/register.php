@@ -1,3 +1,6 @@
+<?php
+  session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +19,17 @@
 </head>
 <body class="hold-transition register-page">
 <div class="register-box">
+  <?php
+    if (isset($_SESSION["error"])){
+      echo <<< ERROR
+        <div class="callout callout-danger">
+          <h5>Błąd!</h5>
+          <p>$_SESSION[error]</p>
+        </div>
+ERROR;
+    unset($_SESSION["error"]);
+    }
+  ?>
 
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
