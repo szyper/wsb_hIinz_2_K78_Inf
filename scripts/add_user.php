@@ -22,5 +22,3 @@ if ($conn->affected_rows == 1){
 }
 
 header("location: ../3_db/4_db_table_delete_add_update.php");
-
-//dokończyć sesję

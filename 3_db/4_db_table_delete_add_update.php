@@ -1,3 +1,6 @@
+<?php
+  session_start();
+?>
 <!doctype html>
 <html lang="pl">
 <head>
@@ -78,19 +81,26 @@ ADDUSERFORM;
   }
 
 if (isset($_GET["userUpdateId"])){
-  $sql = "SELECT warunek";
+  $_SESSION["userUpdateId"] = $_GET["userUpdateId"];
+  $sql = "SELECT * FROM users WHERE id=$_GET[userUpdateId]";
+  $result = $conn->query($sql);
+  $updateUser = $result->fetch_assoc();
 	echo <<< UPDATEUSERFORM
       <h4>Aktualizacja użytkownika</h4>
-      <form method="post" action="../scripts/add_user.php">
-        <input type="text" name="firstName" value="$var[firstName]"><br><br>
-        <input type="text" name="lastName" placeholder="Podaj nazwisko"><br><br>
-        <input type="date" name="birthday">Data urodzenia<br><br>
+      <form method="post" action="../scripts/update_user.php">
+        <input type="text" name="firstName" value="$updateUser[firstName]"><br><br>
+        <input type="text" name="lastName" value="$updateUser[lastName]"><br><br>
+        <input type="date" name="birthday" value="$updateUser[birthday]">Data urodzenia<br><br>
         <select name="city_id">
 UPDATEUSERFORM;
 	$sql = "SELECT * FROM `cities`;";
 	$result = $conn->query($sql);
 	while($city = $result->fetch_assoc()){
-		echo "<option value=\"$city[id]\">$city[city]</option>";
+    if ($city["id"] == $updateUser["city_id"]){
+	    echo "<option value=\"$city[id]\" selected>$city[city]</option>";
+    }else{
+	    echo "<option value=\"$city[id]\">$city[city]</option>";
+    }
 	}
 	echo <<< UPDATEUSERFORM
         </select><br><br>
