@@ -25,18 +25,21 @@ try {
 		// "email istnieje";
 
 		$user = $result->fetch_assoc();
+		$stmt->close();
 		//print_r($user);
 		if (password_verify($_POST["pass"], $user["password"])){
 			$_SESSION["logged"]["firstName"] = $user["firstName"];
 			$_SESSION["logged"]["lastName"] = $user["lastName"];
 			$_SESSION["logged"]["session_id"] = session_id();
 			//echo $_SESSION["logged"]["session_id"];
+			//echo  session_status();
 			$_SESSION["logged"]["role_id"] = $user["role_id"];
-
-
-
+			$_SESSION["logged"]["last_activity"] = time();
+			//print_r($_SESSION["logged"]);
+			header("location: ../pages/logged.php");
 		}else{
-			echo "error";
+			$_SESSION["error"] = "Nie udało się zalogować!";
+			echo "<script>history.back();</script>";
 		}
 
 		//header("location: ???");
