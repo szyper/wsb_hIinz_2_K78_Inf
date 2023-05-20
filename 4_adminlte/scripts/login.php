@@ -1,5 +1,6 @@
 <?php
-print_r($_POST);
+session_start();
+//print_r($_POST);
 
 foreach ($_POST as $value){
 	if (empty($value)){
@@ -12,7 +13,7 @@ foreach ($_POST as $value){
 require_once "./connect.php";
 
 try {
-	$stmt = $conn->prepare("SELECT password FROM users WHERE email=?");
+	$stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
 	$stmt->bind_param("s", $_POST["email"]);
 	$stmt->execute();
 
@@ -24,8 +25,16 @@ try {
 		// "email istnieje";
 
 		$user = $result->fetch_assoc();
+		//print_r($user);
 		if (password_verify($_POST["pass"], $user["password"])){
-			echo "ok";
+			$_SESSION["logged"]["firstName"] = $user["firstName"];
+			$_SESSION["logged"]["lastName"] = $user["lastName"];
+			$_SESSION["logged"]["session_id"] = session_id();
+			//echo $_SESSION["logged"]["session_id"];
+			$_SESSION["logged"]["role_id"] = $user["role_id"];
+
+
+
 		}else{
 			echo "error";
 		}
